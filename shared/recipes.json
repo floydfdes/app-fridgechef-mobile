@@ -1,0 +1,162 @@
+{
+    "myRecipes": [
+        {
+            "id": 1,
+            "name": "Homemade Pizza",
+            "cuisine": "Italian",
+            "rating": 4.8,
+            "imageUrl": "https://example.com/homemade-pizza.jpg",
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": 2,
+            "name": "Vegetable Stir Fry",
+            "cuisine": "Asian",
+            "rating": 4.5,
+            "imageUrl": "https://example.com/vegetable-stir-fry.jpg",
+            "difficulty": "Easy"
+        },
+        {
+            "id": 3,
+            "name": "Chocolate Chip Cookies",
+            "cuisine": "Dessert",
+            "rating": 4.9,
+            "imageUrl": "https://example.com/chocolate-chip-cookies.jpg",
+            "difficulty": "Easy"
+        }
+    ],
+    "popularRecipes": [
+        {
+            "id": 4,
+            "name": "Spaghetti Carbonara",
+            "cuisine": "Italian",
+            "rating": 4.7,
+            "imageUrl": "https://example.com/spaghetti-carbonara.jpg",
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": 5,
+            "name": "Chicken Tikka Masala",
+            "cuisine": "Indian",
+            "rating": 4.6,
+            "imageUrl": "https://example.com/chicken-tikka-masala.jpg",
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": 6,
+            "name": "Sushi Rolls",
+            "cuisine": "Japanese",
+            "rating": 4.8,
+            "imageUrl": "https://example.com/sushi-rolls.jpg",
+            "difficulty": "Advanced"
+        }
+    ],
+    "breakfast": [
+        {
+            "id": 7,
+            "name": "Avocado Toast",
+            "cuisine": "American",
+            "rating": 4.5,
+            "imageUrl": "https://example.com/avocado-toast.jpg",
+            "difficulty": "Easy"
+        },
+        {
+            "id": 8,
+            "name": "Pancakes",
+            "cuisine": "American",
+            "rating": 4.7,
+            "imageUrl": "https://example.com/pancakes.jpg",
+            "difficulty": "Easy"
+        }
+    ],
+    "lunch": [
+        {
+            "id": 9,
+            "name": "Caesar Salad",
+            "cuisine": "Italian",
+            "rating": 4.4,
+            "imageUrl": "https://example.com/caesar-salad.jpg",
+            "difficulty": "Easy"
+        },
+        {
+            "id": 10,
+            "name": "Grilled Cheese Sandwich",
+            "cuisine": "American",
+            "rating": 4.3,
+            "imageUrl": "https://example.com/grilled-cheese.jpg",
+            "difficulty": "Easy"
+        }
+    ],
+    "dinner": [
+        {
+            "id": 11,
+            "name": "Beef Stir Fry",
+            "cuisine": "Asian",
+            "rating": 4.6,
+            "imageUrl": "https://example.com/beef-stir-fry.jpg",
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": 12,
+            "name": "Baked Salmon",
+            "cuisine": "Seafood",
+            "rating": 4.8,
+            "imageUrl": "https://example.com/baked-salmon.jpg",
+            "difficulty": "Intermediate"
+        }
+    ],
+    "desserts": [
+        {
+            "id": 13,
+            "name": "Tiramisu",
+            "cuisine": "Italian",
+            "rating": 4.9,
+            "imageUrl": "https://example.com/tiramisu.jpg",
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": 14,
+            "name": "Apple Pie",
+            "cuisine": "American",
+            "rating": 4.7,
+            "imageUrl": "https://example.com/apple-pie.jpg",
+            "difficulty": "Intermediate"
+        }
+    ],
+    "vegetarian": [
+        {
+            "id": 15,
+            "name": "Vegetable Lasagna",
+            "cuisine": "Italian",
+            "rating": 4.5,
+            "imageUrl": "https://example.com/vegetable-lasagna.jpg",
+            "difficulty": "Intermediate"
+        },
+        {
+            "id": 16,
+            "name": "Mushroom Risotto",
+            "cuisine": "Italian",
+            "rating": 4.6,
+            "imageUrl": "https://example.com/mushroom-risotto.jpg",
+            "difficulty": "Intermediate"
+        }
+    ],
+    "quickAndEasy": [
+        {
+            "id": 17,
+            "name": "Microwave Quesadilla",
+            "cuisine": "Mexican",
+            "rating": 4.2,
+            "imageUrl": "https://example.com/microwave-quesadilla.jpg",
+            "difficulty": "Easy"
+        },
+        {
+            "id": 18,
+            "name": "5-Minute Omelette",
+            "cuisine": "French",
+            "rating": 4.4,
+            "imageUrl": "https://example.com/5-minute-omelette.jpg",
+            "difficulty": "Easy"
+        }
+    ]
+}
