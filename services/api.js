@@ -3,7 +3,7 @@ import axios from 'axios';
 // Simulating API delay
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://apifridgechef.koyeb.app';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
