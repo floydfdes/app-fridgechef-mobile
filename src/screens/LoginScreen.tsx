@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
     Alert,
     Keyboard,
@@ -8,7 +9,6 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import React, { useState } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../../services/api';
@@ -57,8 +57,10 @@ const Login = ({ navigation }) => {
 
         try {
             const userData = await login(email, password);
-            await AsyncStorage.setItem('userId', userData.userId);
-            console.log('User logged in:', userData);
+            if (userData) {
+                await AsyncStorage.setItem('userId', userData['id']);
+                console.log('User logged in:', userData);
+            }
             navigation.navigate('Home');
         } catch (error: any) {
             console.error('Login failed:', error);

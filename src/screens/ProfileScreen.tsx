@@ -1,21 +1,22 @@
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Ensure you have this installed for icons
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getUserProfile } from '../../services/api'; // Import your API service
+import { UserProfile } from '../../shared/types';
 
-const Profile = () => {
-    const [userProfile, setUserProfile] = useState<any>(null);
+
+const Profile = ({ navigation }) => {
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUserId = async () => {
             try {
-                const storedUserId = await AsyncStorage.getItem('userId');
-                if (storedUserId) {
-                    setUserId(storedUserId);
+                const userId = await AsyncStorage.getItem('userId');
+                if (userId) {
+                    setUserId(userId);
                 }
             } catch (error) {
                 console.error('Error fetching user ID:', error);
@@ -27,76 +28,45 @@ const Profile = () => {
     }, []);
 
     useEffect(() => {
-        if (1) {//make this proper logic later
+        if (userId) {
             fetchUserProfile();
         }
     }, [userId]);
 
     const fetchUserProfile = async () => {
         try {
-            setIsLoading(true);
+            setLoading(true);
             setError(null);
-            // Replace this with the real API call
-            const profileData = {
-                profilePicture: 'https://via.placeholder.com/150',
-                name: 'John Doe',
-                username: 'johndoe',
-                recipesCount: 23,
-                followersCount: 100,
-                followingCount: 50,
-                bio: 'Lorem ipsum dolor sit amet.',
-                recipes: [
-                    { id: '1', name: 'Recipe 1', imageUrl: 'https://via.placeholder.com/120' },
-                    { id: '2', name: 'Recipe 2', imageUrl: 'https://via.placeholder.com/120' },
-                ],
-                recentActivity: [
-                    { icon: 'heart', text: 'Liked your recipe' },
-                    { icon: 'comment', text: 'Commented on your recipe' },
-                ],
-            };
+            const profileData = await getUserProfile(userId!);
+            console.log(profileData)
             setUserProfile(profileData);
         } catch (error) {
             console.error('Error fetching user profile:', error);
             setError('Failed to load user profile. Please try again.');
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
-    const handleUpdateProfile = async (updatedData: any) => {
+    const handleLogout = async () => {
         try {
-            // Simulate a successful profile update
-            setUserProfile(updatedData);
-            Alert.alert('Success', 'Profile updated successfully');
+            await AsyncStorage.removeItem('userId');
+            Alert.alert('Logged Out', 'You have been logged out successfully.');
+            navigation.navigate('Landing');
         } catch (error) {
-            console.error('Error updating profile:', error);
-            Alert.alert('Error', 'Failed to update profile. Please try again.');
+            console.error('Error during logout:', error);
+            Alert.alert('Logout Failed', 'An error occurred while logging out. Please try again.');
         }
     };
 
-    if (isLoading) {
-        return (
-            <View style={styles.centerContainer}>
-                <Text style={styles.loadingText}>Loading...</Text>
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.centerContainer}>
-                <Text style={styles.errorText}>{error}</Text>
-                <TouchableOpacity style={styles.retryButton} onPress={fetchUserProfile}>
-                    <Text style={styles.retryButtonText}>Retry</Text>
-                </TouchableOpacity>
-            </View>
-        );
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
     }
 
     if (!userProfile) {
         return (
-            <View style={styles.centerContainer}>
-                <Text style={styles.errorText}>No profile data available.</Text>
+            <View style={styles.container}>
+                <Text style={styles.errorText}>User profile not found.</Text>
             </View>
         );
     }
@@ -110,7 +80,7 @@ const Profile = () => {
                 />
                 <View style={styles.headerInfo}>
                     <Text style={styles.name}>{userProfile.name}</Text>
-                    <Text style={styles.username}>@{userProfile.username}</Text>
+                    <Text style={styles.username}>@{userProfile.name}</Text>
                 </View>
             </View>
 
@@ -131,6 +101,10 @@ const Profile = () => {
 
             <Text style={styles.bio}>{userProfile.bio}</Text>
 
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                <Text style={styles.logoutButtonText}>Logout</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.editButton}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
             </TouchableOpacity>
@@ -138,23 +112,23 @@ const Profile = () => {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>My Recipes</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {userProfile.recipes.map((recipe: any) => (
+                    {/* {userProfile.recipes.map((recipe) => (
                         <View key={recipe.id} style={styles.recipeThumbnail}>
                             <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
                             <Text style={styles.recipeName}>{recipe.name}</Text>
                         </View>
-                    ))}
+                    ))} */}
                 </ScrollView>
             </View>
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Recent Activity</Text>
-                {userProfile.recentActivity.map((activity: any, index: number) => (
+                {/* {userProfile.recentActivity.map((activity, index) => (
                     <View key={index} style={styles.activityItem}>
-                        <FontAwesome name={activity.icon} size={16} color="black" />
+                        <FontAwesome5Icon name={activity.icon} size={16} color="black" />
                         <Text style={styles.activityText}>{activity.text}</Text>
                     </View>
-                ))}
+                ))} */}
             </View>
         </ScrollView>
     );
@@ -163,65 +137,33 @@ const Profile = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-    },
-    centerContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    loadingText: {
-        fontSize: 18,
-        color: '#000',
-    },
-    errorText: {
-        fontSize: 16,
-        color: '#ff0000',
-        textAlign: 'center',
-        marginHorizontal: 20,
-    },
-    retryButton: {
-        backgroundColor: '#007BFF',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        marginTop: 20,
-    },
-    retryButtonText: {
-        color: '#fff',
-        fontSize: 16,
+        padding: 20,
+        backgroundColor: '#ffffff',
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 20,
     },
     profilePicture: {
         width: 80,
         height: 80,
         borderRadius: 40,
-        marginRight: 20,
     },
     headerInfo: {
-        flex: 1,
+        marginLeft: 10,
     },
     name: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
-        color: '#000',
     },
     username: {
         fontSize: 16,
-        color: '#888',
+        color: '#666',
     },
     statsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        paddingVertical: 20,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: '#ccc',
+        marginVertical: 20,
     },
     statItem: {
         alignItems: 'center',
@@ -229,66 +171,62 @@ const styles = StyleSheet.create({
     statNumber: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#000',
     },
     statLabel: {
         fontSize: 14,
-        color: '#888',
+        color: '#666',
     },
     bio: {
         fontSize: 16,
-        color: '#000',
-        textAlign: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
+        marginVertical: 10,
     },
     editButton: {
-        backgroundColor: '#007BFF',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        alignSelf: 'center',
-        marginVertical: 20,
+        backgroundColor: '#6c63ff',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
     },
     editButtonText: {
         color: '#fff',
-        fontSize: 16,
     },
     section: {
-        padding: 20,
+        marginTop: 20,
     },
     sectionTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#000',
-        marginBottom: 10,
     },
     recipeThumbnail: {
-        width: 120,
-        height: 160,
         marginRight: 10,
-        borderRadius: 10,
-        overflow: 'hidden',
     },
     recipeImage: {
-        width: 120,
-        height: 120,
+        width: 100,
+        height: 100,
+        borderRadius: 10,
     },
     recipeName: {
-        fontSize: 14,
-        color: '#000',
         textAlign: 'center',
-        paddingTop: 5,
     },
     activityItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
+        marginVertical: 5,
     },
     activityText: {
-        fontSize: 16,
-        color: '#000',
-        marginLeft: 10,
+        marginLeft: 5,
+    },
+    errorText: {
+        color: 'red'
+    },
+    logoutButton: {
+        backgroundColor: '#ff4d4d',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    logoutButtonText: {
+        color: '#fff',
     },
 });
 

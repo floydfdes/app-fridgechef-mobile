@@ -1,3 +1,4 @@
+import React, { useCallback, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
@@ -9,14 +10,12 @@ import {
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
-import React, { useCallback, useState } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient'; // Install react-native-linear-gradient
 import { signup } from '../../services/api';
 
-// Define interface for form errors
 interface FormErrors {
     fullNameError?: string;
     emailError?: string;
@@ -57,8 +56,9 @@ const Signup = ({ navigation }) => {
         }
 
         try {
-            const userData = await signup(fullName, email, password); // Assume `signup` is implemented
-            await AsyncStorage.setItem('userId', userData.userId);
+            const userData = await signup(fullName, email, password);
+            console.log(userData)
+            await AsyncStorage.setItem('userId', userData['id']);
             navigation.navigate('Home');
         } catch (error) {
             console.error('Signup failed:', error);
