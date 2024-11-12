@@ -1,26 +1,20 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { Ionicons } from 'react-native-vector-icons';
-import { LinearGradient } from 'react-native-linear-gradient';
 import React from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import { Ionicons } from 'react-native-vector-icons';
 
 const RecipeCard = ({ recipe }) => (
-    <TouchableOpacity>
+    <TouchableOpacity >
         <View style={styles.card}>
-            {/* Image of the recipe */}
             <Image source={{ uri: recipe.imageUrl || 'https://picsum.photos/700' }} style={styles.image} />
-
-            {/* Gradient overlay */}
-            <LinearGradient
-                colors={['transparent', 'rgba(0,0,0,0.8)']}
-                style={styles.gradient}
-            >
+            <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.gradient}>
                 <View style={styles.contentContainer}>
                     <Text style={styles.title}>{recipe.name}</Text>
                     <View style={styles.infoContainer}>
                         <Text style={styles.cuisine}>{recipe.cuisine}</Text>
                         <View style={styles.ratingContainer}>
-                            <Ionicons name="star" size={16} color="#FFD700" /> {/* Gold star */}
+                            <Ionicons name="star" size={16} color="#FFD700" />
                             <Text style={styles.rating}>{recipe.rating}</Text>
                         </View>
                     </View>
@@ -36,8 +30,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 15,
         overflow: 'hidden',
-        elevation: 5, // For shadow on Android
-        backgroundColor: '#fff', // Default white background
+        elevation: 5,
+        backgroundColor: '#fff',
     },
     image: {
         width: '100%',
@@ -55,9 +49,9 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     title: {
-        fontWeight: 'bold', // Default bold
-        fontSize: 18, // Adjust as needed
-        color: '#fff', // White text
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: '#fff',
         marginBottom: 5,
     },
     infoContainer: {
@@ -67,21 +61,21 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     cuisine: {
-        fontSize: 14, // Adjust as needed
-        color: '#fff', // White text
+        fontSize: 14,
+        color: '#fff',
     },
     ratingContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     rating: {
-        fontSize: 14, // Adjust as needed
-        color: '#fff', // White text
+        fontSize: 14,
+        color: '#fff',
         marginLeft: 5,
     },
     difficulty: {
-        fontSize: 12, // Adjust as needed
-        color: '#fff', // White text
+        fontSize: 12,
+        color: '#fff',
         textTransform: 'uppercase',
     },
 });

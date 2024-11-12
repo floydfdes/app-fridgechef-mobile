@@ -1,9 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { getUserProfile } from '../../services/api'; // Import your API service
-import { UserProfile } from '../../shared/types';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserProfile } from '../../services/api'; // Import your API service
+import { colors } from '../../shared/customCSS';
+import { UserProfile } from '../../shared/types';
 
 const Profile = ({ navigation }) => {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -138,7 +139,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#ffffff',
+        backgroundColor: colors.third,
+        fontFamily: 'Poppins-Regular'
     },
     header: {
         flexDirection: 'row',
@@ -155,10 +157,12 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 20,
         fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold'
     },
     username: {
         fontSize: 16,
         color: '#666',
+        fontFamily: 'Poppins-Bold'
     },
     statsContainer: {
         flexDirection: 'row',
@@ -171,23 +175,26 @@ const styles = StyleSheet.create({
     statNumber: {
         fontSize: 18,
         fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold'
     },
     statLabel: {
         fontSize: 14,
         color: '#666',
+        fontFamily: 'Poppins-Bold'
     },
     bio: {
         fontSize: 16,
         marginVertical: 10,
     },
     editButton: {
-        backgroundColor: '#6c63ff',
+        backgroundColor: colors.secondary,
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
     },
     editButtonText: {
-        color: '#fff',
+        color: colors.third,
+        fontFamily: 'Poppins-Bold'
     },
     section: {
         marginTop: 20,
@@ -195,6 +202,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 18,
         fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold'
     },
     recipeThumbnail: {
         marginRight: 10,
@@ -219,14 +227,16 @@ const styles = StyleSheet.create({
         color: 'red'
     },
     logoutButton: {
-        backgroundColor: '#ff4d4d',
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
         marginTop: 20,
+        marginBottom: 10,
+        backgroundColor: colors.primary
     },
     logoutButtonText: {
-        color: '#fff',
+        color: colors.third,
+        fontFamily: 'Poppins-Bold'
     },
 });
 

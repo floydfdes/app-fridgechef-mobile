@@ -12,6 +12,7 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../../services/api';
+import { colors } from '../../shared/customCSS';
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 100,
         paddingHorizontal: 40,
-        backgroundColor: '#fff', // Replace LinearGradient with a solid color
+        backgroundColor: '#fff',
     },
     contentContainer: {
         alignItems: 'flex-start',
@@ -143,15 +144,15 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         letterSpacing: 3,
         marginBottom: 10,
-        color: '#000', // Replace colors.primary
-        fontFamily: 'PoppinsBold', // Make sure Poppins is available in your project
+        color: colors.primary,
+        fontFamily: 'Poppins-Bold',
     },
     paragraph: {
         fontSize: 16,
         textAlign: 'left',
         lineHeight: 30,
-        color: '#000', // Replace colors.primary
-        fontFamily: 'PoppinsLight',
+        color: colors.primary,
+        fontFamily: 'Poppins-Regular',
     },
     inputContainer: {
         flexDirection: 'row',
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
         fontFamily: 'PoppinsLight',
     },
     button: {
-        backgroundColor: '#4CAF50', // Use color codes directly or replace with your custom color
+        backgroundColor: colors.primary,
         borderRadius: 35,
         height: 60,
         width: '100%',
@@ -199,19 +200,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Bold',
     },
     forgotPasswordButton: {
         alignSelf: 'flex-end',
         marginTop: -10,
         marginRight: 20,
-        fontFamily: 'PoppinsLight',
+        fontFamily: 'Poppins-Regular',
     },
     forgotPasswordButtonText: {
         color: '#000', // Replace with your primary color
     },
     signupButton: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.secondary,
+        color: colors.primary,
         borderRadius: 35,
         height: 60,
         width: '100%',
@@ -228,10 +230,10 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     signupButtonText: {
-        color: '#4CAF50', // Replace with your secondary color
+        color: colors.third, // Replace with your secondary color
         fontSize: 18,
         fontWeight: 'bold',
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Bold',
     },
     termsContainer: {
         flex: 1,
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#000',
         textAlign: 'center',
-        fontFamily: 'PoppinsLight',
+        fontFamily: 'Poppins-Light',
     },
     error: {
         color: 'red',

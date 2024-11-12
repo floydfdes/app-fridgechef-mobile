@@ -1,6 +1,7 @@
 // types.ts
 export type Recipe = {
     id: string;
+    category: string;
     name: string;
     imageUrl: string;
     cuisine: string;

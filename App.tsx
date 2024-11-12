@@ -1,17 +1,17 @@
 import { baseFontSize, colors } from './shared/customCSS';
 
-import Explorer from './src/screens/ExplorerScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { StatusBar } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Explorer from './src/screens/ExplorerScreen';
 import Landing from './src/screens/LandingScreen';
 import Login from './src/screens/LoginScreen';
 import Main from './src/screens/MainScreen';
 import MyRecipes from './src/screens/MyRecipesScreen';
-import { NavigationContainer } from '@react-navigation/native';
 import Profile from './src/screens/ProfileScreen';
-import React from 'react';
 import Signup from './src/screens/SignUpScreen';
-import { StatusBar } from 'react-native';
 // App.js
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -29,13 +29,13 @@ function HomeNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerTintColor: colors.primary,
-        headerTitleStyle: { fontFamily: 'Poppins', fontSize: baseFontSize * 2 },
+        headerTitleStyle: { fontFamily: 'Poppins-Bold', fontSize: baseFontSize * 2 },
         headerStyle: {
           backgroundColor: colors.third,
         },
         tabBarActiveTintColor: colors.fourth,
         tabBarLabelStyle: {
-          fontFamily: 'Poppins',
+          fontFamily: 'Poppins-SemiBold',
           marginBottom: 1
         },
       }}

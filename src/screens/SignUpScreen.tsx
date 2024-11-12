@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { signup } from '../../services/api';
+import { colors } from '../../shared/customCSS';
 
 interface FormErrors {
     fullNameError?: string;
@@ -162,13 +163,13 @@ const styles = StyleSheet.create({
         letterSpacing: 3,
         marginBottom: 10,
         color: '#2f2f2f',
-        fontFamily: 'PoppinsBold',
+        fontFamily: 'Poppins-Bold',
     },
     paragraph: {
         fontSize: 16,
         lineHeight: 30,
         color: '#2f2f2f',
-        fontFamily: 'PoppinsLight',
+        fontFamily: 'Poppins-Regular',
     },
     inputContainer: {
         flexDirection: 'row',
@@ -186,9 +187,9 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     icon: { marginRight: 10 },
-    input: { flex: 1, height: '100%', color: '#000', fontFamily: 'PoppinsLight' },
+    input: { flex: 1, height: '100%', color: '#000', fontFamily: 'Poppins-Regular' },
     button: {
-        backgroundColor: '#8796a2',
+        backgroundColor: colors.primary,
         borderRadius: 35,
         height: 60,
         width: '100%',
@@ -201,9 +202,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 10,
     },
-    buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold', fontFamily: 'Poppins' },
+    buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold', fontFamily: 'Poppins-Bold' },
     loginButton: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.third,
+        color: colors.primary,
         borderRadius: 35,
         height: 60,
         width: '100%',
@@ -216,9 +218,9 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 10,
     },
-    loginButtonText: { color: '#8796a2', fontSize: 18, fontWeight: 'bold', fontFamily: 'Poppins' },
+    loginButtonText: { color: '#8796a2', fontSize: 18, fontWeight: 'bold', fontFamily: 'Poppins-Bold' },
     termsContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    termsText: { fontSize: 12, color: '#000', textAlign: 'center', fontFamily: 'PoppinsLight' },
+    termsText: { fontSize: 12, color: '#000', textAlign: 'center', fontFamily: 'Poppins-Regular' },
     error: { color: 'red', marginBottom: 5, marginTop: -19 },
 });
 

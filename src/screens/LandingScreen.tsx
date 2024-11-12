@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import {
   ImageBackground,
   StatusBar,
@@ -6,12 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { baseFontSize, colors } from '../../shared/customCSS';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import LinearGradient from 'react-native-linear-gradient';
 import React from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { RootStackParamList } from '../navigation/types';
 
 export default function Landing() {
@@ -71,13 +71,13 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   appName: {
-    fontFamily: 'PoppinsBold',
+    fontFamily: 'Poppins-Bold',
     fontSize: baseFontSize * 3,
     color: 'white',
     textAlign: 'center',
   },
   tagline: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Regular',
     fontSize: baseFontSize * 1.2,
     color: 'white',
     textAlign: 'center',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   buttonText: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins-Bold',
     fontSize: baseFontSize * 1.2,
     color: 'white',
     marginLeft: 10,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   footer: {
-    fontFamily: 'PoppinsLight',
+    fontFamily: 'Poppins-Regular',
     fontSize: baseFontSize * 0.9,
     color: 'white',
     textAlign: 'center',
