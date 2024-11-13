@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserProfile } from '../../services/api'; // Import your API service
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { getUserProfile, updateUserProfile } from '../../services/api'; // Import your API service
 import { colors } from '../../shared/customCSS';
 import { UserProfile } from '../../shared/types';
 
@@ -10,6 +10,9 @@ const Profile = ({ navigation }) => {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState<string | null>(null);
+    const [name, setName] = useState<string>('');
+    const [bio, setBio] = useState<string>('');
+    const [profilePicture, setProfilePicture] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -39,8 +42,10 @@ const Profile = ({ navigation }) => {
             setLoading(true);
             setError(null);
             const profileData = await getUserProfile(userId!);
-            console.log(profileData)
             setUserProfile(profileData);
+            setName(profileData.name);
+            setBio(profileData.bio || '');
+            setProfilePicture(profileData.profilePicture || null);
         } catch (error) {
             console.error('Error fetching user profile:', error);
             setError('Failed to load user profile. Please try again.');
@@ -60,6 +65,44 @@ const Profile = ({ navigation }) => {
         }
     };
 
+    const handleImagePicker = () => {
+        launchImageLibrary(
+            {
+                mediaType: 'photo',
+                quality: 1,
+            },
+            (response) => {
+                if (response.didCancel) {
+                    console.log('User canceled image picker');
+                } else if (response.errorMessage) {
+                    console.error('Image Picker Error: ', response.errorMessage);
+                    Alert.alert('Error', 'Failed to open image picker. Please try again.');
+                } else {
+                    const uri = response.assets && response.assets[0].uri;
+                    if (uri) {
+                        setProfilePicture(uri);
+                    }
+                }
+            }
+        );
+    };
+
+    const handleUpdateProfile = async () => {
+        try {
+            const updatedProfile = {
+                name,
+                bio,
+                profilePicture,
+            };
+            await updateUserProfile(userId!, updatedProfile);
+            Alert.alert('Success', 'Profile updated successfully!');
+            fetchUserProfile(); // Refresh the profile data
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            Alert.alert('Update Failed', 'An error occurred while updating your profile. Please try again.');
+        }
+    };
+
     if (loading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
@@ -75,61 +118,46 @@ const Profile = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
-                <Image
-                    source={{ uri: userProfile.profilePicture }}
-                    style={styles.profilePicture}
-                />
+                <TouchableOpacity onPress={handleImagePicker}>
+                    <Image
+                        source={{ uri: profilePicture || userProfile.profilePicture }}
+                        style={styles.profilePicture}
+                    />
+                </TouchableOpacity>
                 <View style={styles.headerInfo}>
-                    <Text style={styles.name}>{userProfile.name}</Text>
-                    <Text style={styles.username}>@{userProfile.name}</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={name}
+                        onChangeText={setName}
+                        placeholder="Name"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        value={bio}
+                        onChangeText={setBio}
+                        placeholder="Bio"
+                    />
                 </View>
             </View>
 
-            <View style={styles.statsContainer}>
-                <View style={styles.statItem}>
-                    <Text style={styles.statNumber}>{userProfile.recipesCount}</Text>
-                    <Text style={styles.statLabel}>Recipes</Text>
-                </View>
-                <View style={styles.statItem}>
-                    <Text style={styles.statNumber}>{userProfile.followersCount}</Text>
-                    <Text style={styles.statLabel}>Followers</Text>
-                </View>
-                <View style={styles.statItem}>
-                    <Text style={styles.statNumber}>{userProfile.followingCount}</Text>
-                    <Text style={styles.statLabel}>Following</Text>
-                </View>
-            </View>
-
-            <Text style={styles.bio}>{userProfile.bio}</Text>
+            <TouchableOpacity style={styles.updateButton} onPress={handleUpdateProfile}>
+                <Text style={styles.updateButtonText}>Update Profile</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.logoutButtonText}>Logout</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.editButton}>
-                <Text style={styles.editButtonText}>Edit Profile</Text>
-            </TouchableOpacity>
-
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>My Recipes</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {/* {userProfile.recipes.map((recipe) => (
-                        <View key={recipe.id} style={styles.recipeThumbnail}>
-                            <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
-                            <Text style={styles.recipeName}>{recipe.name}</Text>
-                        </View>
-                    ))} */}
+                    {/* Render user recipes here */}
                 </ScrollView>
             </View>
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Recent Activity</Text>
-                {/* {userProfile.recentActivity.map((activity, index) => (
-                    <View key={index} style={styles.activityItem}>
-                        <FontAwesome5Icon name={activity.icon} size={16} color="black" />
-                        <Text style={styles.activityText}>{activity.text}</Text>
-                    </View>
-                ))} */}
+                {/* Render recent activity here */}
             </View>
         </ScrollView>
     );
@@ -140,7 +168,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: colors.third,
-        fontFamily: 'Poppins-Regular'
     },
     header: {
         flexDirection: 'row',
@@ -153,48 +180,36 @@ const styles = StyleSheet.create({
     },
     headerInfo: {
         marginLeft: 10,
+        flex: 1,
     },
-    name: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        fontFamily: 'Poppins-Bold'
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginVertical: 5,
     },
-    username: {
-        fontSize: 16,
-        color: '#666',
-        fontFamily: 'Poppins-Bold'
-    },
-    statsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginVertical: 20,
-    },
-    statItem: {
-        alignItems: 'center',
-    },
-    statNumber: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontFamily: 'Poppins-Bold'
-    },
-    statLabel: {
-        fontSize: 14,
-        color: '#666',
-        fontFamily: 'Poppins-Bold'
-    },
-    bio: {
-        fontSize: 16,
-        marginVertical: 10,
-    },
-    editButton: {
+    updateButton: {
         backgroundColor: colors.secondary,
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
+        marginTop: 20,
     },
-    editButtonText: {
+    updateButtonText: {
         color: colors.third,
-        fontFamily: 'Poppins-Bold'
+        fontWeight: 'bold',
+    },
+    logoutButton: {
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginTop: 20,
+        backgroundColor: colors.primary,
+    },
+    logoutButtonText: {
+        color: colors.third,
+        fontWeight: 'bold',
     },
     section: {
         marginTop: 20,
@@ -202,41 +217,9 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        fontFamily: 'Poppins-SemiBold'
-    },
-    recipeThumbnail: {
-        marginRight: 10,
-    },
-    recipeImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 10,
-    },
-    recipeName: {
-        textAlign: 'center',
-    },
-    activityItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 5,
-    },
-    activityText: {
-        marginLeft: 5,
     },
     errorText: {
-        color: 'red'
-    },
-    logoutButton: {
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 20,
-        marginBottom: 10,
-        backgroundColor: colors.primary
-    },
-    logoutButtonText: {
-        color: colors.third,
-        fontFamily: 'Poppins-Bold'
+        color: 'red',
     },
 });
 

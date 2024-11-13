@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// Simulating API delay
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const API_BASE_URL = 'https://apifridgechef.koyeb.app';
 
@@ -12,42 +10,8 @@ const api = axios.create({
     },
 });
 
-// Add this function to set the token after login
 export const setAuthToken = (token) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-};
-
-const categories = [
-    { id: '1', name: 'Breakfast', key: 'breakfast' },
-    { id: '2', name: 'Lunch', key: 'lunch' },
-    { id: '3', name: 'Dinner', key: 'dinner' },
-    { id: '4', name: 'Desserts', key: 'desserts' },
-    { id: '5', name: 'Vegetarian', key: 'vegetarian' },
-    { id: '6', name: 'Quick & Easy', key: 'quickAndEasy' },
-];
-
-const assignCategory = (recipe) => {
-    const categories = {
-        breakfast: ['breakfast', 'pancake', 'omelette'],
-        lunch: ['salad', 'sandwich'],
-        dinner: ['soup', 'steak', 'pasta'],
-        desserts: ['cake', 'pie', 'ice cream'],
-        vegetarian: ['vegetable', 'vegan']
-    };
-
-    const name = recipe.name.toLowerCase();
-
-    for (const [category, keywords] of Object.entries(categories)) {
-        if (keywords.some(keyword => name.includes(keyword))) {
-            return category;
-        }
-    }
-
-    if (!['chicken', 'beef', 'pork', 'fish'].some(meat => name.includes(meat))) {
-        return 'vegetarian';
-    }
-
-    return 'quickAndEasy';
 };
 
 export const login = async (email, password) => {
