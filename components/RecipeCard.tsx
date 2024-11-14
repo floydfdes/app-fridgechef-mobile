@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { Ionicons } from 'react-native-vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const RecipeCard = ({ recipe }) => (
     <TouchableOpacity >
