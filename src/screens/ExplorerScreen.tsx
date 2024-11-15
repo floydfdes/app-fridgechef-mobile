@@ -20,7 +20,7 @@ const categories = [
 ];
 
 
-const Explore = () => {
+const Explore = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,7 +77,7 @@ const Explore = () => {
           {filteredRecipes.length > 0 ? (
             <FlatList
               data={filteredRecipes}
-              renderItem={({ item }) => <RecipeCard recipe={item} />}
+              renderItem={({ item }) => <RecipeCard recipe={item} navigation={navigation} />}
               keyExtractor={item => item._id.toString()}
             />
           ) : (

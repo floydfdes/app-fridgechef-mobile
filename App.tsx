@@ -5,6 +5,7 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import RecipeDetailScreen from './components/RecipeDetailsScreen';
 import Explorer from './src/screens/ExplorerScreen';
 import Landing from './src/screens/LandingScreen';
 import Login from './src/screens/LoginScreen';
@@ -84,7 +85,13 @@ const App = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="default" />  {/* Use React Native's StatusBar */}
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerTintColor: colors.primary,
+        headerTitleStyle: { fontFamily: 'Poppins-Bold', fontSize: baseFontSize },
+        headerStyle: {
+          backgroundColor: colors.third,
+        },
+      }}>
         <Stack.Screen
           name="Landing"
           component={Landing}
@@ -104,6 +111,14 @@ const App = () => {
           name="SignUp"
           component={Signup}
           options={{ headerShown: false, gestureEnabled: true }}
+        />
+        <Stack.Screen
+          name="RecipeDetailsScreen"
+          component={RecipeDetailScreen}
+          options={{
+            headerTitle: 'Recipe Details',
+            gestureEnabled: true,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

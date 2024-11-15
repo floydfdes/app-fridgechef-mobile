@@ -4,8 +4,8 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const RecipeCard = ({ recipe }) => (
-    <TouchableOpacity >
+const RecipeCard = ({ recipe, navigation }) => (
+    <TouchableOpacity onPress={() => navigation.navigate('RecipeDetailsScreen', { recipe })}>
         <View style={styles.card}>
             <Image source={{ uri: recipe.imageUrl || 'https://picsum.photos/700' }} style={styles.image} />
             <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.gradient}>
