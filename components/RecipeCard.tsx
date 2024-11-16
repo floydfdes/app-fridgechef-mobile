@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     title: {
-        fontWeight: 'bold',
         fontSize: 18,
         color: '#fff',
         marginBottom: 5,
+        fontFamily: 'Poppins-Bold',
     },
     infoContainer: {
         flexDirection: 'row',
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     cuisine: {
         fontSize: 14,
         color: '#fff',
+        fontFamily: 'Poppins-Regular',
     },
     ratingContainer: {
         flexDirection: 'row',
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#fff',
         marginLeft: 5,
+        fontFamily: 'Poppins-Regular',
     },
     difficulty: {
         fontSize: 12,

@@ -7,6 +7,7 @@ export type Recipe = {
     cuisine: string;
     rating: number;
     difficulty: string;
+    createdBy: string
 };
 
 export type UserProfile = {

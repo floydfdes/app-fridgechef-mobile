@@ -1,14 +1,15 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Recipe } from '../../shared/types';
 import RecipeCard from '../../components/RecipeCard';
 import { getRecipes } from '../../services/api';
+import { Recipe } from '../../shared/types';
 
-const MyRecipes = () => {
+const MyRecipes = ({ navigation }) => {
     const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
-    const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         fetchRecipes();
@@ -16,12 +17,25 @@ const MyRecipes = () => {
 
     const fetchRecipes = async () => {
         try {
+            setLoading(true);
+            setError(null);
+            const userId = await AsyncStorage.getItem('userId');
+
+            if (!userId) {
+                navigation.navigate('Login');
+                return;
+            }
+
             const recipesData = await getRecipes();
-            setMyRecipes(recipesData.recipes.slice(0, 5));
-            setPopularRecipes(recipesData.recipes.slice(5, 10));
+            const userRecipes = recipesData.recipes.filter(
+                (recipe: Recipe) => recipe.createdBy === userId
+            );
+            setMyRecipes(userRecipes);
         } catch (error) {
             console.error('Error fetching recipes:', error);
-            // Optionally, show an alert or handle error
+            setError('Failed to load recipes. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -30,14 +44,7 @@ const MyRecipes = () => {
             <Text style={styles.sectionTitle}>My Recipes</Text>
             <View style={styles.recipeList}>
                 {myRecipes.map((recipe) => (
-                    <RecipeCard key={recipe.id?.toString() || `my-${recipe.name}`} recipe={recipe} />
-                ))}
-            </View>
-
-            <Text style={styles.sectionTitle}>Popular Recipes</Text>
-            <View style={styles.recipeList}>
-                {popularRecipes.map((recipe) => (
-                    <RecipeCard key={recipe.id?.toString() || `popular-${recipe.name}`} recipe={recipe} />
+                    <RecipeCard key={recipe._id?.toString() || `my-${recipe.name}`} recipe={recipe} navigation={navigation} />
                 ))}
             </View>
         </ScrollView>
