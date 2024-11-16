@@ -6,6 +6,7 @@ import { StatusBar } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import RecipeDetailScreen from './components/RecipeDetailsScreen';
+import AddRecipeScreen from './src/screens/AddRecipeScreen';
 import Explorer from './src/screens/ExplorerScreen';
 import Landing from './src/screens/LandingScreen';
 import Login from './src/screens/LoginScreen';
@@ -117,6 +118,14 @@ const App = () => {
           component={RecipeDetailScreen}
           options={{
             headerTitle: 'Recipe Details',
+            gestureEnabled: true,
+          }}
+        />
+        <Stack.Screen
+          name="AddRecipeScreen"
+          component={AddRecipeScreen}
+          options={{
+            headerTitle: 'Add Recipe',
             gestureEnabled: true,
           }}
         />

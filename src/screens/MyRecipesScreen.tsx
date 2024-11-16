@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import RecipeCard from '../../components/RecipeCard';
 import { getRecipes } from '../../services/api';
+import { colors } from '../../shared/customCSS';
 import { Recipe } from '../../shared/types';
 
 const MyRecipes = ({ navigation }) => {
@@ -41,10 +43,23 @@ const MyRecipes = ({ navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.sectionTitle}>My Recipes</Text>
+            <View style={styles.headerContainer}>
+                <Text style={styles.sectionTitle}>My Recipes</Text>
+                <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={() => navigation.navigate('AddRecipeScreen')}
+                >
+                    <FontAwesome name="plus" size={20} color="#fff" />
+                    <Text style={styles.addButtonText}>Add Recipe</Text>
+                </TouchableOpacity>
+            </View>
             <View style={styles.recipeList}>
                 {myRecipes.map((recipe) => (
-                    <RecipeCard key={recipe._id?.toString() || `my-${recipe.name}`} recipe={recipe} navigation={navigation} />
+                    <RecipeCard
+                        key={recipe._id?.toString() || `my-${recipe.name}`}
+                        recipe={recipe}
+                        navigation={navigation}
+                    />
                 ))}
             </View>
         </ScrollView>
@@ -100,16 +115,25 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
     addButton: {
-        backgroundColor: '#6c63ff',
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        borderRadius: 25,
-        alignSelf: 'center',
-        marginVertical: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: colors.primary,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderRadius: 20,
+        elevation: 2,
     },
     addButtonText: {
-        color: '#ffffff',
+        color: '#fff',
+        marginLeft: 8,
+        fontFamily: 'Poppins-Regular',
         fontSize: 16,
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: 20,
     },
 });
 

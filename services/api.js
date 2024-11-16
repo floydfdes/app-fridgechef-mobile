@@ -84,3 +84,12 @@ export const uploadFridgeImage = async (imageFile) => {
         throw error.response.data;
     }
 };
+
+export const addRecipe = async (recipeData) => {
+    try {
+        const response = await api.post('/recipes', recipeData);
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
