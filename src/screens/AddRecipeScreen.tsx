@@ -110,6 +110,7 @@ const AddRecipeScreen = ({ navigation }) => {
                         value={recipe.name}
                         onChangeText={(text) => setRecipe({ ...recipe, name: text })}
                         placeholder="Enter recipe name"
+                        placeholderTextColor={colors.primary}
                     />
                 </View>
 
@@ -140,6 +141,7 @@ const AddRecipeScreen = ({ navigation }) => {
                         value={recipe.cuisine}
                         onChangeText={(text) => setRecipe({ ...recipe, cuisine: text })}
                         placeholder="Enter cuisine type (e.g., Italian, Asian)"
+                        placeholderTextColor={colors.primary}
                     />
                 </View>
 
@@ -170,12 +172,14 @@ const AddRecipeScreen = ({ navigation }) => {
                             value={newIngredient.name}
                             onChangeText={(text) => setNewIngredient({ ...newIngredient, name: text })}
                             placeholder="Ingredient name"
+                            placeholderTextColor={colors.primary}
                         />
                         <TextInput
                             style={styles.ingredientAmount}
                             value={newIngredient.amount}
                             onChangeText={(text) => setNewIngredient({ ...newIngredient, amount: text })}
                             placeholder="Amount"
+                            placeholderTextColor={colors.primary}
                         />
                     </View>
                     <TouchableOpacity style={styles.addIngredientButton} onPress={addIngredient}>
@@ -203,6 +207,7 @@ const AddRecipeScreen = ({ navigation }) => {
                     value={recipe.instructions}
                     onChangeText={(text) => setRecipe({ ...recipe, instructions: text })}
                     placeholder="Enter step-by-step instructions"
+                    placeholderTextColor={colors.primary}
                     multiline
                     numberOfLines={6}
                 />

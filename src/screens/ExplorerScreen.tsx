@@ -1,10 +1,10 @@
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { Recipe } from '../../shared/types';
 import RecipeCard from '../../components/RecipeCard';
-import { colors } from '../../shared/customCSS';
 import { getRecipes } from '../../services/api';
+import { colors } from '../../shared/customCSS';
+import { Recipe } from '../../shared/types';
 
 const categories = [
   { id: '1', name: 'Appetizers & Starters', key: 'appetizersAndStarters' },
@@ -118,14 +118,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   backButton: {
-    backgroundColor: '#6c63ff',
+    backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
   },
   backButtonText: {
-    color: '#fff',
+    color: colors.third,
     textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
   },
   noRecipesText: {
     fontSize: 16,

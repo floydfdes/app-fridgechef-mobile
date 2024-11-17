@@ -3,27 +3,41 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { PLACEHOLDER_IMAGE } from '../shared/constants';
 
-const RecipeCard = ({ recipe, navigation }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('RecipeDetailsScreen', { recipe })}>
-        <View style={styles.card}>
-            <Image source={{ uri: recipe.imageUrl || 'https://picsum.photos/700' }} style={styles.image} />
-            <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.gradient}>
-                <View style={styles.contentContainer}>
-                    <Text style={styles.title}>{recipe.name}</Text>
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.cuisine}>{recipe.cuisine}</Text>
-                        <View style={styles.ratingContainer}>
-                            <Ionicons name="star" size={16} color="#FFD700" />
-                            <Text style={styles.rating}>{recipe.rating}</Text>
+const RecipeCard = ({ recipe, navigation }) => {
+    const getImageSource = () => {
+        if (recipe.imageUrl && recipe.imageUrl !== '') {
+            return { uri: recipe.imageUrl };
+        }
+        return PLACEHOLDER_IMAGE;
+    };
+
+    return (
+        <TouchableOpacity onPress={() => navigation.navigate('RecipeDetailsScreen', { recipe })}>
+            <View style={styles.card}>
+                <Image
+                    source={getImageSource()}
+                    style={styles.image}
+                    defaultSource={PLACEHOLDER_IMAGE} // Fallback while loading
+                />
+                <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.gradient}>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.title}>{recipe.name}</Text>
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.cuisine}>{recipe.cuisine}</Text>
+                            <View style={styles.ratingContainer}>
+                                <Ionicons name="star" size={16} color="#FFD700" />
+                                <Text style={styles.rating}>{recipe.rating}</Text>
+                            </View>
                         </View>
+                        <Text style={styles.difficulty}>{recipe.difficulty}</Text>
                     </View>
-                    <Text style={styles.difficulty}>{recipe.difficulty}</Text>
-                </View>
-            </LinearGradient>
-        </View>
-    </TouchableOpacity>
-);
+                </LinearGradient>
+            </View>
+        </TouchableOpacity>
+    );
+};
 
 const styles = StyleSheet.create({
     card: {
@@ -36,6 +50,7 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 200,
+        resizeMode: 'cover',
     },
     gradient: {
         position: 'absolute',

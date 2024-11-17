@@ -3,17 +3,26 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { PLACEHOLDER_IMAGE } from '../shared/constants';
 import { colors } from '../shared/customCSS';
 
 const RecipeDetailScreen = ({ route }) => {
     const { recipe } = route.params;
 
+    const getImageSource = () => {
+        if (recipe.imageUrl && recipe.imageUrl !== '') {
+            return { uri: recipe.imageUrl };
+        }
+        return PLACEHOLDER_IMAGE;
+    };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image
-                    source={{ uri: recipe.imageUrl || 'https://picsum.photos/700' }}
+                    source={getImageSource()}
                     style={styles.image}
+                    defaultSource={PLACEHOLDER_IMAGE}
                 />
                 <LinearGradient
                     colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -55,12 +64,12 @@ const styles = StyleSheet.create({
         backgroundColor: colors.third,
     },
     imageContainer: {
-        height: 300,
-        width: '100%',
+        position: 'relative',
     },
     image: {
         width: '100%',
-        height: '100%',
+        height: 200,
+        resizeMode: 'cover',
     },
     gradient: {
         position: 'absolute',

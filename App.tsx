@@ -85,14 +85,20 @@ function HomeNavigator() {
 const App = () => {
   return (
     <NavigationContainer>
-      <StatusBar barStyle="default" />  {/* Use React Native's StatusBar */}
-      <Stack.Navigator screenOptions={{
-        headerTintColor: colors.primary,
-        headerTitleStyle: { fontFamily: 'Poppins-Bold', fontSize: baseFontSize },
-        headerStyle: {
-          backgroundColor: colors.third,
-        },
-      }}>
+      <StatusBar barStyle="default" />
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+            fontSize: 20,
+          },
+          headerBackTitleStyle: {
+            fontFamily: 'Poppins-Regular',
+            fontSize: 16,
+          },
+          headerTintColor: colors.primary,
+        }}
+      >
         <Stack.Screen
           name="Landing"
           component={Landing}
