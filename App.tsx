@@ -90,11 +90,11 @@ const App = () => {
         screenOptions={{
           headerTitleStyle: {
             fontFamily: 'Poppins-Medium',
-            fontSize: 20,
+            fontSize: 16,
           },
           headerBackTitleStyle: {
             fontFamily: 'Poppins-Regular',
-            fontSize: 16,
+            fontSize: 14,
           },
           headerTintColor: colors.primary,
         }}

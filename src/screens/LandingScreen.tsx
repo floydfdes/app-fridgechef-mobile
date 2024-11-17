@@ -19,8 +19,7 @@ export default function Landing() {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1543352634-99a5d50ae78e' }}
-      // source={require('../../assets/images/FridgeChefLanding.png')}
+      source={require('../../assets/images/FridgeChefLanding.jpeg')}
       style={styles.container}
     >
       <StatusBar barStyle="light-content" /> {/* Custom StatusBar */}

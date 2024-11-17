@@ -1,13 +1,18 @@
 // types.ts
 export type Recipe = {
     _id: string;
-    category: string;
     name: string;
-    imageUrl: string;
+    category: string;
     cuisine: string;
-    rating: number;
     difficulty: string;
-    createdBy: string
+    imageUrl: string;
+    rating: number;
+    ingredients: Array<{
+        name: string;
+        amount: string;
+    }>;
+    instructions: string;
+    createdBy: string;
 };
 
 export type UserProfile = {
