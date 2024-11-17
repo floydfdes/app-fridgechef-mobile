@@ -3,21 +3,10 @@ import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react
 
 import RecipeCard from '../../components/RecipeCard';
 import { getRecipes } from '../../services/api';
+import { RECIPE_CATEGORIES } from '../../shared/constants';
 import { colors } from '../../shared/customCSS';
 import { Recipe } from '../../shared/types';
 
-const categories = [
-  { id: '1', name: 'Appetizers & Starters', key: 'appetizersAndStarters' },
-  { id: '2', name: 'Main Dishes (Entrées)', key: 'mainDishes' },
-  { id: '3', name: 'Desserts & Sweets', key: 'dessertsAndSweets' },
-  { id: '4', name: 'Salads & Fresh Dishes', key: 'saladsAndFreshDishes' },
-  { id: '5', name: 'Soups, Stews & Broths', key: 'soupsAndStews' },
-  { id: '6', name: 'Breakfast & Morning Meals', key: 'breakfastAndMorningMeals' },
-  { id: '7', name: 'Rice, Grains & Pasta', key: 'riceGrainsAndPasta' },
-  { id: '8', name: 'Breads & Baked Goods', key: 'breadsAndBakedGoods' },
-  { id: '9', name: 'Beverages', key: 'beverages' },
-  { id: '10', name: 'Street Food & Snacks', key: 'streetFoodAndSnacks' }
-];
 
 
 const Explore = ({ navigation }) => {
@@ -61,7 +50,7 @@ const Explore = ({ navigation }) => {
       <Text style={styles.title}>Explore Recipes</Text>
       {!selectedCategory ? (
         <FlatList
-          data={categories}
+          data={RECIPE_CATEGORIES}
           renderItem={renderCategory}
           keyExtractor={item => item.id}
           numColumns={2}

@@ -19,6 +19,12 @@ export type UserProfile = {
     recipesCount: number;
     followersCount: number;
     followingCount: number;
-    createdAt: Date;  // added due to timestamps option in Mongoose schema
-    updatedAt: Date;  // added due to timestamps option in Mongoose schema
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+
+export type Ingredient = {
+    name: string;
+    amount: string;
 };

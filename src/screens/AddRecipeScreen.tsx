@@ -1,6 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import {
     Alert,
+    Image,
     ScrollView,
     StyleSheet,
     Text,
@@ -8,30 +11,12 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Picker } from '@react-native-picker/picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { addRecipe } from '../../services/api';
+import { PLACEHOLDER_IMAGE, RECIPE_CATEGORIES } from '../../shared/constants';
 import { colors } from '../../shared/customCSS';
-
-type Ingredient = {
-    name: string;
-    amount: string;
-};
-
-const categories = [
-    { id: '1', name: 'Appetizers & Starters', key: 'appetizersAndStarters' },
-    { id: '2', name: 'Main Dishes', key: 'mainDishes' },
-    { id: '3', name: 'Desserts & Sweets', key: 'dessertsAndSweets' },
-    { id: '4', name: 'Salads & Fresh Dishes', key: 'saladsAndFreshDishes' },
-    { id: '5', name: 'Soups & Stews', key: 'soupsAndStews' },
-    { id: '6', name: 'Breakfast & Morning Meals', key: 'breakfastAndMorningMeals' },
-    { id: '7', name: 'Rice, Grains & Pasta', key: 'riceGrainsAndPasta' },
-    { id: '8', name: 'Breads & Baked Goods', key: 'breadsAndBakedGoods' },
-    { id: '9', name: 'Beverages', key: 'beverages' },
-    { id: '10', name: 'Street Food & Snacks', key: 'streetFoodAndSnacks' }
-];
+import { Ingredient } from '../../shared/types';
 
 const AddRecipeScreen = ({ navigation }) => {
     const [recipe, setRecipe] = useState({
@@ -39,16 +24,17 @@ const AddRecipeScreen = ({ navigation }) => {
         category: '',
         cuisine: '',
         difficulty: 'Easy',
-        imageUrl: '',
-        rating: 4.5,
         ingredients: [] as Ingredient[],
         instructions: '',
+        imageUrl: '',
     });
 
     const [newIngredient, setNewIngredient] = useState({
         name: '',
         amount: '',
     });
+
+    const [showImageOptions, setShowImageOptions] = useState(false);
 
     const addIngredient = () => {
         if (newIngredient.name && newIngredient.amount) {
@@ -65,9 +51,25 @@ const AddRecipeScreen = ({ navigation }) => {
         setRecipe({ ...recipe, ingredients: updatedIngredients });
     };
 
+    const selectImage = async () => {
+        const result = await launchImageLibrary({
+            mediaType: 'photo',
+            quality: 0.8,
+        });
+
+        if (result.assets?.[0]?.uri) {
+            setRecipe({ ...recipe, imageUrl: result.assets[0].uri });
+            setShowImageOptions(false);
+        }
+    };
+
+    const handleImageUrl = (url: string) => {
+        setRecipe({ ...recipe, imageUrl: url });
+    };
+
     const handleSubmit = async () => {
         try {
-            if (!recipe.name || !recipe.category || !recipe.cuisine || recipe.ingredients.length === 0 || !recipe.instructions) {
+            if (!recipe.name || !recipe.category || !recipe.cuisine || !recipe.ingredients.length || !recipe.instructions) {
                 Alert.alert('Error', 'Please fill in all required fields');
                 return;
             }
@@ -81,11 +83,8 @@ const AddRecipeScreen = ({ navigation }) => {
             const recipeData = {
                 ...recipe,
                 createdBy: userId,
-                imageUrl: recipe.imageUrl || 'https://picsum.photos/700',
             };
-            console.log('start of console.log');
-            console.log(recipeData);
-            console.log('end of console.log');
+
             await addRecipe(recipeData);
             Alert.alert('Success', 'Recipe added successfully!');
             navigation.goBack();
@@ -123,7 +122,7 @@ const AddRecipeScreen = ({ navigation }) => {
                             style={styles.picker}
                         >
                             <Picker.Item label="Select a category" value="" />
-                            {categories.map((category) => (
+                            {RECIPE_CATEGORIES.map((category) => (
                                 <Picker.Item
                                     key={category.id}
                                     label={category.name}
@@ -161,6 +160,57 @@ const AddRecipeScreen = ({ navigation }) => {
                 </View>
             </View>
 
+            {/* Image Section */}
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Recipe Image</Text>
+
+                <TouchableOpacity
+                    style={styles.imageOptionsButton}
+                    onPress={() => setShowImageOptions(!showImageOptions)}
+                >
+                    <FontAwesome name="image" size={20} color="#fff" />
+                    <Text style={styles.imageOptionsText}>Add Image</Text>
+                </TouchableOpacity>
+
+                {showImageOptions && (
+                    <View style={styles.imageOptionsContainer}>
+                        <TouchableOpacity
+                            style={styles.optionButton}
+                            onPress={selectImage}
+                        >
+                            <FontAwesome name="folder" size={20} color={colors.primary} />
+                            <Text style={styles.optionText}>Choose from Device</Text>
+                        </TouchableOpacity>
+
+                        <Text style={styles.orText}>OR</Text>
+
+                        <TextInput
+                            style={styles.urlInput}
+                            value={recipe.imageUrl}
+                            onChangeText={handleImageUrl}
+                            placeholder="Paste image URL"
+                            placeholderTextColor={colors.primary}
+                        />
+                    </View>
+                )}
+
+                {recipe.imageUrl && (
+                    <View style={styles.imagePreviewContainer}>
+                        <Image
+                            source={{ uri: recipe.imageUrl }}
+                            style={styles.imagePreview}
+                            defaultSource={PLACEHOLDER_IMAGE}
+                        />
+                        <TouchableOpacity
+                            style={styles.removeImageButton}
+                            onPress={() => setRecipe({ ...recipe, imageUrl: '' })}
+                        >
+                            <FontAwesome name="times" size={20} color={colors.primary} />
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </View>
+
             {/* Ingredients Section */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Ingredients</Text>
@@ -187,10 +237,10 @@ const AddRecipeScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                {recipe.ingredients.map((ing, index) => (
+                {recipe.ingredients.map((ingredient, index) => (
                     <View key={index} style={styles.ingredientItem}>
                         <Text style={styles.ingredientText}>
-                            {ing.name} - {ing.amount}
+                            {ingredient.name} - {ingredient.amount}
                         </Text>
                         <TouchableOpacity onPress={() => removeIngredient(index)}>
                             <FontAwesome name="times" size={20} color={colors.primary} />
@@ -269,6 +319,71 @@ const styles = StyleSheet.create({
     },
     picker: {
         height: 50,
+    },
+    imageOptionsButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: colors.primary,
+        padding: 12,
+        borderRadius: 8,
+        justifyContent: 'center',
+        marginBottom: 10,
+    },
+    imageOptionsText: {
+        marginLeft: 8,
+        color: '#fff',
+        fontFamily: 'Poppins-Regular',
+        fontSize: 16,
+    },
+    imageOptionsContainer: {
+        backgroundColor: '#f5f5f5',
+        padding: 15,
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    optionButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 12,
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    optionText: {
+        marginLeft: 8,
+        color: colors.primary,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 14,
+    },
+    orText: {
+        textAlign: 'center',
+        color: colors.secondary,
+        fontFamily: 'Poppins-Regular',
+        marginVertical: 10,
+    },
+    urlInput: {
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        padding: 12,
+        fontFamily: 'Poppins-Regular',
+    },
+    imagePreviewContainer: {
+        position: 'relative',
+        marginTop: 10,
+    },
+    imagePreview: {
+        width: '100%',
+        height: 200,
+        borderRadius: 8,
+    },
+    removeImageButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        padding: 5,
+        elevation: 2,
     },
     ingredientInputContainer: {
         flexDirection: 'row',
