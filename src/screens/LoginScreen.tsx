@@ -60,7 +60,6 @@ const Login = ({ navigation }) => {
             const userData = await login(email, password);
             if (userData) {
                 await AsyncStorage.setItem('userId', userData['id']);
-                console.log('User logged in:', userData);
             }
             navigation.navigate('Home');
         } catch (error: any) {

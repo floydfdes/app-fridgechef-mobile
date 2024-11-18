@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
@@ -8,10 +7,12 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { getRecipes, getRecipesByIngredients } from '../../services/api';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RecipeCard from '../../components/RecipeCard';
 import SearchBar from '../../components/SearchBar';
-import { getRecipes, getRecipesByIngredients } from '../../services/api';
 import { colors } from '../../shared/customCSS';
 import { Recipe } from '../../shared/types';
 
@@ -61,13 +62,11 @@ const MyRecipes = ({ navigation }) => {
             }
 
             if (ingredients.length === 0) {
-                // If search is cleared, fetch all recipes
                 await fetchRecipes();
                 return;
             }
 
             const response = await getRecipesByIngredients({ ingredients });
-            // Filter for user's recipes from search results
             const userSearchResults = response.recipes.filter(
                 (recipe: Recipe) => recipe.createdBy === userId
             );

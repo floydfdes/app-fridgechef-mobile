@@ -58,7 +58,6 @@ const Signup = ({ navigation }) => {
 
         try {
             const userData = await signup(fullName, email, password);
-            console.log(userData)
             await AsyncStorage.setItem('userId', userData['id']);
             navigation.navigate('Home');
         } catch (error) {

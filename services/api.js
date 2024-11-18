@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 const API_BASE_URL = 'https://apifridgechef.koyeb.app';
 
 const api = axios.create({
@@ -45,8 +44,8 @@ export const getRecipes = async (page = 1, limit = 10) => {
 
 export const getRecipesByIngredients = async (ingredients) => {
     try {
-        const response = await api.post('/recipes/by-ingredients', { ingredients });
-        return response.data.recipes;
+        const response = await api.post('/recipes/by-ingredients', ingredients);
+        return response.data;
     } catch (error) {
         throw error.response.data;
     }

@@ -7,8 +7,6 @@ import { RECIPE_CATEGORIES } from '../../shared/constants';
 import { colors } from '../../shared/customCSS';
 import { Recipe } from '../../shared/types';
 
-
-
 const Explore = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -40,7 +38,6 @@ const Explore = ({ navigation }) => {
       <Text style={styles.categoryText}>{item.name}</Text>
     </TouchableOpacity>
   );
-  console.log(selectedCategory, recipes)
   const filteredRecipes = selectedCategory
     ? recipes.filter(recipe => recipe.category === selectedCategory)
     : recipes;

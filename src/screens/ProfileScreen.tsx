@@ -1,8 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { getUserProfile, updateUserProfile } from '../../services/api';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Avatar } from 'react-native-elements';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { getUserProfile, updateUserProfile } from '../../services/api'; // Import your API service
 import { colors } from '../../shared/customCSS';
 import { UserProfile } from '../../shared/types';
 
@@ -96,7 +98,7 @@ const Profile = ({ navigation }) => {
             };
             await updateUserProfile(userId!, updatedProfile);
             Alert.alert('Success', 'Profile updated successfully!');
-            fetchUserProfile(); // Refresh the profile data
+            fetchUserProfile();
         } catch (error) {
             console.error('Error updating profile:', error);
             Alert.alert('Update Failed', 'An error occurred while updating your profile. Please try again.');
@@ -119,9 +121,13 @@ const Profile = ({ navigation }) => {
         <ScrollView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={handleImagePicker}>
-                    <Image
-                        source={{ uri: profilePicture || userProfile.profilePicture }}
-                        style={styles.profilePicture}
+                    <Avatar
+                        rounded
+                        size="large"
+                        source={profilePicture ? { uri: profilePicture } : undefined}
+                        title={name ? name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
+                        overlayContainerStyle={{ backgroundColor: colors.primary }}
+                        titleStyle={{ color: colors.third }}
                     />
                 </TouchableOpacity>
                 <View style={styles.headerInfo}>
@@ -172,11 +178,6 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    profilePicture: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
     },
     headerInfo: {
         marginLeft: 10,
