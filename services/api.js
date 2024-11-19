@@ -51,6 +51,15 @@ export const getRecipesByIngredients = async (ingredients) => {
     }
 };
 
+export const searchRecipes = async (searchTerm) => {
+    try {
+        const response = await api.get(`/recipes/search?searchTerm=${encodeURIComponent(searchTerm)}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+};
+
 export const getUserProfile = async (userId) => {
     try {
         const response = await api.get(`/users/${userId}`);

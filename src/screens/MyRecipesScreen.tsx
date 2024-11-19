@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { getRecipes, getRecipesByIngredients } from '../../services/api';
+import { getRecipes, getRecipesByIngredients, searchRecipes } from '../../services/api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -50,7 +50,7 @@ const MyRecipes = ({ navigation }) => {
         }
     };
 
-    const handleSearch = async (ingredients: string[]) => {
+    const handleSearch = async (searchTerm: string, type: 'ingredients' | 'text') => {
         try {
             setIsSearching(true);
             setError(null);
@@ -61,14 +61,22 @@ const MyRecipes = ({ navigation }) => {
                 return;
             }
 
-            if (ingredients.length === 0) {
+            if (!searchTerm) {
                 await fetchRecipes();
                 return;
             }
 
-            const response = await getRecipesByIngredients({ ingredients });
+            let response;
+            if (type === 'ingredients') {
+                response = await getRecipesByIngredients({
+                    ingredients: searchTerm.split(',')
+                });
+            } else {
+                response = await searchRecipes(searchTerm);
+            }
+
             const userSearchResults = response.recipes.filter(
-                (recipe: Recipe) => recipe.createdBy === userId
+                (recipe: Recipe) => recipe.createdBy["_id"] === userId
             );
             setMyRecipes(userSearchResults);
         } catch (error) {
