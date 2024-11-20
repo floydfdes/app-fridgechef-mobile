@@ -1,19 +1,31 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { rateRecipe } from '../services/api';
 import { PLACEHOLDER_IMAGE } from '../shared/constants';
 import { colors } from '../shared/customCSS';
+import Rating from './Rating';
 
 const RecipeDetailScreen = ({ route }) => {
-    const { recipe } = route.params;
+    const { recipe: initialRecipe } = route.params;
+    const [recipe, setRecipe] = useState(initialRecipe);
 
     const getImageSource = () => {
         if (recipe.imageUrl && recipe.imageUrl !== '') {
             return { uri: recipe.imageUrl };
         }
         return PLACEHOLDER_IMAGE;
+    };
+
+    const handleRate = async (rating: number) => {
+        try {
+            const response = await rateRecipe(recipe._id, rating);
+            setRecipe(response);
+        } catch (error) {
+            console.error('Error rating recipe:', error);
+            Alert.alert('Error', 'Failed to submit rating. Please try again.');
+        }
     };
 
     return (
@@ -32,8 +44,12 @@ const RecipeDetailScreen = ({ route }) => {
                     <View style={styles.headerInfo}>
                         <Text style={styles.cuisine}>{recipe.cuisine}</Text>
                         <View style={styles.ratingContainer}>
-                            <Ionicons name="star" size={16} color="#FFD700" />
-                            <Text style={styles.rating}>{recipe.rating}</Text>
+                            <Rating
+                                rating={recipe.rating || 0}
+                                onRate={handleRate}
+                                size={16}
+                                readonly={false}
+                            />
                         </View>
                         <Text style={styles.difficulty}>{recipe.difficulty}</Text>
                     </View>
@@ -99,12 +115,7 @@ const styles = StyleSheet.create({
     ratingContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    rating: {
-        color: '#fff',
-        marginLeft: 5,
-        fontSize: 16,
-        fontFamily: 'Poppins-Regular',
+        marginVertical: 10,
     },
     difficulty: {
         color: '#fff',

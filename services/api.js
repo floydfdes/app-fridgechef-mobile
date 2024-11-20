@@ -101,3 +101,22 @@ export const addRecipe = async (recipeData) => {
         throw error.response.data;
     }
 };
+
+export const updateRecipe = async (recipeId, recipeData) => {
+    try {
+        const response = await api.put(`/recipes/${recipeId}`, recipeData);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+};
+
+export const rateRecipe = async (recipeId, rating) => {
+    try {
+        const response = await api.post(`/recipes/${recipeId}/rate`, { rating });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+};
