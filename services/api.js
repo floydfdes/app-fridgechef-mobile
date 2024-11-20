@@ -120,3 +120,12 @@ export const rateRecipe = async (recipeId, rating) => {
         throw error.response?.data || error;
     }
 };
+
+export const getRecipeById = async (recipeId) => {
+    try {
+        const response = await api.get(`/recipes/${recipeId}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+};

@@ -12,3 +12,9 @@ export const RECIPE_CATEGORIES = [
     { id: '9', name: 'Beverages', key: 'beverages' },
     { id: '10', name: 'Street Food & Snacks', key: 'streetFoodAndSnacks' }
 ]
+
+export const RECIPE_DIFFICULTIES = [
+    { label: 'Easy', value: 'Easy' },
+    { label: 'Intermediate', value: 'Intermediate' },
+    { label: 'Advanced', value: 'Advanced' },
+];

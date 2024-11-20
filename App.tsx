@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import RecipeDetailScreen from './components/RecipeDetailsScreen';
 import AddRecipeScreen from './src/screens/AddRecipeScreen';
+import EditRecipeScreen from './src/screens/EditRecipeScreen';
 import Explorer from './src/screens/ExplorerScreen';
 import Landing from './src/screens/LandingScreen';
 import Login from './src/screens/LoginScreen';
@@ -14,6 +15,7 @@ import Main from './src/screens/MainScreen';
 import MyRecipes from './src/screens/MyRecipesScreen';
 import Profile from './src/screens/ProfileScreen';
 import Signup from './src/screens/SignUpScreen';
+
 // App.js
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -83,6 +85,7 @@ function HomeNavigator() {
 }
 
 const App = () => {
+
   return (
     <NavigationContainer>
       <StatusBar barStyle="default" />
@@ -135,6 +138,10 @@ const App = () => {
             gestureEnabled: true,
           }}
         />
+        <Stack.Screen name="EditRecipeScreen" component={EditRecipeScreen} options={{
+          headerTitle: 'Add Recipe',
+          gestureEnabled: true,
+        }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
