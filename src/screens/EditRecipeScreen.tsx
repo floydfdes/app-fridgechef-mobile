@@ -1,9 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { updateRecipe } from '../../services/api';
 import { RECIPE_CATEGORIES, RECIPE_DIFFICULTIES } from '../../shared/constants';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
+import { updateRecipe } from '../../services/api';
 import { colors } from '../../shared/customCSS';
 
 const EditRecipeScreen = ({ route, navigation }) => {
@@ -19,15 +20,13 @@ const EditRecipeScreen = ({ route, navigation }) => {
                 navigation.navigate('Login');
                 return;
             }
-
             await updateRecipe(updatedRecipe._id, {
                 ...updatedRecipe,
                 category: selectedCategory,
-                cuisine: updatedRecipe.cuisine,
                 difficulty: selectedDifficulty
             });
             Alert.alert('Success', 'Recipe updated successfully!');
-            navigation.goBack();
+            navigation.goBack()
         } catch (error) {
             console.error('Error updating recipe:', error);
             Alert.alert('Error', 'Failed to update recipe. Please try again.');

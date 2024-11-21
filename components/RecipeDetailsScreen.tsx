@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Modal from 'react-native-modal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { rateRecipe } from '../services/api';
+import { deleteRecipe, rateRecipe } from '../services/api';
 import { PLACEHOLDER_IMAGE } from '../shared/constants';
 import { colors } from '../shared/customCSS';
 import Rating from './Rating';
@@ -11,6 +12,7 @@ const RecipeDetailScreen = ({ route, navigation }) => {
     const { recipe: initialRecipe } = route.params;
     const [recipe, setRecipe] = useState(initialRecipe);
     const [isMenuVisible, setMenuVisible] = useState(false);
+    const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
 
     const getImageSource = () => {
         if (recipe.imageUrl && recipe.imageUrl !== '') {
@@ -36,6 +38,22 @@ const RecipeDetailScreen = ({ route, navigation }) => {
 
     const toggleMenu = () => {
         setMenuVisible(!isMenuVisible);
+    };
+
+    const confirmDelete = () => {
+        setDeleteModalVisible(true);
+        setMenuVisible(false);
+    };
+
+    const handleDelete = async () => {
+        try {
+            await deleteRecipe(recipe._id);
+            Alert.alert('Success', 'Recipe deleted successfully!');
+            navigation.goBack();
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+            Alert.alert('Error', 'Failed to delete recipe. Please try again.');
+        }
     };
 
     return (
@@ -72,7 +90,7 @@ const RecipeDetailScreen = ({ route, navigation }) => {
                         <TouchableOpacity onPress={handleEdit} style={styles.menuItem}>
                             <Text style={styles.menuItemText}>Edit</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} disabled>
+                        <TouchableOpacity onPress={confirmDelete} style={styles.menuItem}>
                             <Text style={styles.menuItemText}>Delete</Text>
                         </TouchableOpacity>
                     </View>
@@ -93,6 +111,20 @@ const RecipeDetailScreen = ({ route, navigation }) => {
                 <Text style={styles.sectionTitle}>Instructions</Text>
                 <Text style={styles.instructions}>{recipe.instructions}</Text>
             </View>
+
+            <Modal isVisible={isDeleteModalVisible} onBackdropPress={() => setDeleteModalVisible(false)}>
+                <View style={styles.modalContent}>
+                    <Text style={styles.modalText}>Are you sure you want to delete this recipe?</Text>
+                    <View style={styles.modalButtons}>
+                        <TouchableOpacity onPress={handleDelete} style={styles.modalButton}>
+                            <Text style={styles.modalButtonText}>Yes</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setDeleteModalVisible(false)} style={styles.modalButton}>
+                            <Text style={styles.modalButtonText}>No</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </ScrollView>
     );
 };
@@ -202,6 +234,34 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         color: colors.secondary,
         fontFamily: 'Poppins-Regular',
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalText: {
+        fontSize: 18,
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        flex: 1,
+        padding: 10,
+        alignItems: 'center',
+        backgroundColor: colors.primary,
+        borderRadius: 5,
+        marginHorizontal: 5,
+    },
+    modalButtonText: {
+        color: '#fff',
+        fontSize: 16,
     },
 });
 

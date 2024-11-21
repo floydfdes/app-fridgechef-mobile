@@ -114,7 +114,6 @@ export const updateRecipe = async (recipeId, recipeData) => {
 export const rateRecipe = async (recipeId, rating) => {
     try {
         const response = await api.post(`/recipes/${recipeId}/rate`, { rating });
-        console.log(response.data);
         return response.data;
     } catch (error) {
         throw error.response?.data || error;
@@ -127,5 +126,18 @@ export const getRecipeById = async (recipeId) => {
         return response.data;
     } catch (error) {
         throw error.response?.data || error;
+    }
+};
+
+export const deleteRecipe = async (recipeId) => {
+    console.log(recipeId);
+    console.log('Request Headers:', api.defaults.headers.common);
+
+    try {
+
+        const response = await axios.delete(`${API_BASE_URL}/recipes/${recipeId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 };
