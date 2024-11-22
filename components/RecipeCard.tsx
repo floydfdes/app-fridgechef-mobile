@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 import { PLACEHOLDER_IMAGE } from '../shared/constants';
+import React from 'react';
 
 const RecipeCard = ({ recipe, navigation }) => {
     const getImageSource = () => {
@@ -27,8 +27,8 @@ const RecipeCard = ({ recipe, navigation }) => {
                         <View style={styles.infoContainer}>
                             <Text style={styles.cuisine}>{recipe.cuisine}</Text>
                             <View style={styles.ratingContainer}>
-                                <Ionicons name="star" size={16} color="#FFD700" />
-                                <Text style={styles.rating}>{recipe.rating}</Text>
+                                <Ionicons name={recipe.rating ? "star" : "star-outline"} size={16} color={recipe.rating ? "#FFD700" : "#000"} />
+                                <Text style={styles.rating}>{recipe.rating || 'N/A'}</Text>
                             </View>
                         </View>
                         <Text style={styles.difficulty}>{recipe.difficulty}</Text>

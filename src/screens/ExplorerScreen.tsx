@@ -97,11 +97,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 10,
     elevation: 3,
+    padding: 10,
   },
   categoryText: {
     fontSize: 16,
     color: colors.third,
     fontFamily: 'Poppins-Regular',
+    textAlign: 'center',
+    maxWidth: '80%',
   },
   backButton: {
     backgroundColor: colors.primary,
