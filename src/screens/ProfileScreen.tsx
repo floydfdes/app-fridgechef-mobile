@@ -165,6 +165,13 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.sectionTitle}>Recent Activity</Text>
                 {/* Render recent activity here */}
             </View>
+
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Users')}
+                style={styles.button}
+            >
+                <Text style={styles.buttonText}>View All Users</Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 };
@@ -221,6 +228,16 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: 'red',
+    },
+    button: {
+        marginTop: 20,
+        padding: 10,
+        backgroundColor: '#4a90e2',
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        textAlign: 'center',
     },
 });
 

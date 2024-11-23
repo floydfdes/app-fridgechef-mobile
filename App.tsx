@@ -15,7 +15,7 @@ import Main from './src/screens/MainScreen';
 import MyRecipes from './src/screens/MyRecipesScreen';
 import Profile from './src/screens/ProfileScreen';
 import Signup from './src/screens/SignUpScreen';
-
+import UserScreen from './src/screens/UsersScreen';
 // App.js
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -142,6 +142,14 @@ const App = () => {
           headerTitle: 'Add Recipe',
           gestureEnabled: true,
         }} />
+        <Stack.Screen
+          name="Users"
+          component={UserScreen}
+          options={{
+            headerTitle: 'Users',
+            gestureEnabled: true
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

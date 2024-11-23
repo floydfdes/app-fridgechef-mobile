@@ -16,6 +16,7 @@ export type Recipe = {
 };
 
 export type UserProfile = {
+    _id: string,
     name: string;
     email: string;
     password: string;

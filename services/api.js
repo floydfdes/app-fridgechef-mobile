@@ -19,6 +19,7 @@ export const login = async (email, password) => {
         setAuthToken(response.data.token);
         return response.data;
     } catch (error) {
+        console.log(error);
         throw error.response.data;
     }
 };
@@ -130,8 +131,6 @@ export const getRecipeById = async (recipeId) => {
 };
 
 export const deleteRecipe = async (recipeId) => {
-    console.log(recipeId);
-    console.log('Request Headers:', api.defaults.headers.common);
 
     try {
 
@@ -139,5 +138,33 @@ export const deleteRecipe = async (recipeId) => {
         return response.data;
     } catch (error) {
         throw error;
+    }
+};
+
+export const followUser = async (userIdToFollow) => {
+    try {
+        const response = await api.post(`/users/${userIdToFollow}/follow`, {});
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const unfollowUser = async (userIdToUnfollow) => {
+    try {
+        const response = await api.post(`/users/${userIdToUnfollow}/unfollow`, {});
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const fetchUsers = async (page = 1, limit = 10) => {
+    try {
+        const response = await api.get(`/users?page=${page}&limit=${limit}`);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
     }
 };
