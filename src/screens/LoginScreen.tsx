@@ -100,9 +100,9 @@ const Login = ({ navigation }) => {
             </View>
             {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
 
-            <TouchableOpacity style={styles.forgotPasswordButton}>
+            {/* <TouchableOpacity style={styles.forgotPasswordButton}>
                 <Text style={styles.forgotPasswordButtonText}>Forgot Password</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Login</Text>
